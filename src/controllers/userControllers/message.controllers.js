@@ -5,16 +5,16 @@ import mongoose from "mongoose";
 const createMessage = async (req, res) => {
     try {
         const userId = req.userId;
+        console.log(userId)
         const { secretMessage } = req.body;
-        // console.log(req.body)
+        console.log(req.body)
 
         const userObjectID = new mongoose.Types.ObjectId(userId);
 
         const userMessages = await Message.find({ createdBy: userObjectID });
-        // console.log(userMessages);
-        if (userMessages.length > 1) {
+        console.log(userMessages);
+        if (userMessages.length > 0) {
             return res
-                .status(400)
                 .json({
                     success: false,
                     message: "User can Create only One Secret Message"
@@ -39,7 +39,7 @@ const createMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
     try {
-       
+
         const { pageNo } = req.query || 1;
         const skippedDocs = (pageNo - 1) * 10;
         // console.log(pageNo)

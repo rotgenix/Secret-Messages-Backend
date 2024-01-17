@@ -3,6 +3,7 @@ import { ApiError } from "../../utils/apiError.js";
 import { generateToken } from "../../utils/jwtToken.js";
 import hashPassword from "../../utils/hashPassword.js";
 import matchPassword from "../../utils/matchPassword.js";
+import mongoose from "mongoose";
 
 const userlogin = async (req, res) => {
     try {
@@ -122,8 +123,16 @@ const logoutUser = async (req, res) => {
 const myProfile = async (req, res) => {
     try {
         const userId = req.userId;
+        const objUserId = new mongoose.Types.ObjectId(userId);
+    
         const profile = await User.aggregate(
             [
+                {
+                    $match: {
+                        _id: objUserId
+                    }
+                },
+
                 {
                     $lookup: {
                         from: "messages",
@@ -146,7 +155,7 @@ const myProfile = async (req, res) => {
             .json({
                 success: true,
                 message: "User Profile",
-                profile: profile[0]
+                profile: profile
             })
     } catch (error) {
         throw new ApiError(500, "Server Error");
