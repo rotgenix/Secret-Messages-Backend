@@ -3,10 +3,16 @@ import userRoutes from './routes/userRoutes/user.routes.js';
 import cors from 'cors';
 import messageRoutes from './routes/messageRoutes/message.routes.js';
 import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv';
 const app = express();
 
+dotenv.config({
+    path: './config.env'
+});
+
+// console.log(process.env.CORS_ORIGIN)
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "PUT", "DELETE", "POST"],
     credentials: true,
 }));

@@ -5,7 +5,7 @@ import { app } from './app.js';
 dotenv.config({
     path: './config.env'
 });
-console.log(process.env.CORS_ORIGIN)
+
 connectDb()
     .then(() => {
         console.log("Connected to DB");
